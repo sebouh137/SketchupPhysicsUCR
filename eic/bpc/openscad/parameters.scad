@@ -19,10 +19,10 @@ bpc_length=150*cm;
 bpc_first_hole_radius=15*cm;
 bpc_last_hole_radius=19*cm;
 bpc_layer_thickness=square_absorber_thickness+square_absorber_longitudinal_gap;
-bpc_nlayers=floor(bpc_length/bpc_layer_thickness);
+//bpc_nlayers=floor(bpc_length/bpc_layer_thickness);
+bpc_nlayers=51;
 function bpc_hole_radius(i)=bpc_first_hole_radius+(bpc_last_hole_radius-bpc_first_hole_radius)*i/bpc_nlayers;
-//this value has not been finalized
-bpc_outer_gap=2*cm;
+bpc_outer_gap=0.4*cm;
 
 
 
