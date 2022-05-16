@@ -30,10 +30,10 @@ bpc_outer_gap=0.4*cm;
 
 
 //scintillator
-spider_scint_thickness=0.3*cm;
-spider_scint_height=square_absorber_height*6+5*square_absorber_vertical_gap;
-spider_scint_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_gap;
-spider_scint_inner_gap=square_absorber_horizontal_gap/2;
+scint_thickness=0.3*cm;
+scint_height=square_absorber_height*6+5*square_absorber_vertical_gap;
+scint_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_gap;
+scint_inner_gap=square_absorber_horizontal_gap/2;
 
 
 
@@ -61,7 +61,7 @@ cover_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_g
 cover_inner_gap=square_absorber_horizontal_gap/2;
 
 //cblock
-cblock_thickness=bpc_layer_thickness-pcb_thickness-spider_scint_thickness-2*air_gap_thickness-2*ESR_film_thickness-cover_thickness;
+cblock_thickness=bpc_layer_thickness-pcb_thickness-scint_thickness-2*air_gap_thickness-2*ESR_film_thickness-cover_thickness;
 cblock_height=square_absorber_height*6+5*square_absorber_vertical_gap;
 cblock_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_gap;
 cblock_inner_gap=square_absorber_horizontal_gap/2;
@@ -70,6 +70,6 @@ cblock_inner_gap=square_absorber_horizontal_gap/2;
 //longitudinal positions of the first layer
 cblock_position=cblock_thickness/2;
 cover_position=cblock_thickness+air_gap_thickness+cover_thickness/2;
-spider_scint_position=cblock_thickness+air_gap_thickness+cover_thickness+ESR_film_thickness+spider_scint_thickness/2;
-pcb_position=cblock_thickness+air_gap_thickness+cover_thickness+ESR_film_thickness+spider_scint_thickness+ESR_film_thickness+pcb_thickness/2;
+scint_position=cblock_thickness+air_gap_thickness+cover_thickness+ESR_film_thickness+scint_thickness/2;
+pcb_position=cblock_thickness+air_gap_thickness+cover_thickness+ESR_film_thickness+scint_thickness+ESR_film_thickness+pcb_thickness/2;
 echo(cblock_thickness);

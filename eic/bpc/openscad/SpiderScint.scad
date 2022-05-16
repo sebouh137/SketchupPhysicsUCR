@@ -1,8 +1,8 @@
 include<parameters.scad>
 
 
-echo("height is", spider_scint_height);
-echo("width is", spider_scint_width);
+echo("height is", scint_height);
+echo("width is", scint_width);
 
 //create a small part of a sphere that can be subtracted from a more complicated object
 module dimple(depth, radius){
@@ -13,7 +13,7 @@ module dimple(depth, radius){
     }
 }
 
-module spider_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, groove_depth=0.2*cm,thickness=spider_scint_thickness, cell_radius_delta=scint_cell_dr, height=spider_scint_height, width=spider_scint_width,cell_center_min_distance_from_edge=scint_cell_center_min_distance_from_edge,inner_gap=spider_scint_inner_gap,make_dimples=true, make_grooves=true)
+module spider_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, groove_depth=0.2*cm,thickness=scint_thickness, cell_radius_delta=scint_cell_dr, height=scint_height, width=scint_width,cell_center_min_distance_from_edge=scint_cell_center_min_distance_from_edge,inner_gap=scint_inner_gap,make_dimples=true, make_grooves=true)
 {   
     epsilon=0.1;
     diagonal=sqrt(height*height/4+width*width);
@@ -96,12 +96,12 @@ spider_scint_layer=0;  // which layer to render if spider_scint_all_layers=false
 if(spider_scint_all_layers){
     //last layer is absorber only.  
     for(layer_number=[0:bpc_nlayers-2])
-        translate([spider_scint_position+bpc_layer_thickness*layer_number,0,0]) {
+        translate([scint_position+bpc_layer_thickness*layer_number,0,0]) {
                 spider_scint(hole_radius=bpc_hole_radius( layer_number),make_grooves=spider_scint_details, make_dimples=spider_scint_details);
                 mirror([0,1,0]) spider_scint(hole_radius=bpc_hole_radius( layer_number),make_grooves=spider_scint_details, make_dimples=spider_scint_details);
             }
 } else {
-    translate([spider_scint_position,0,0]) spider_scint(hole_radius=bpc_hole_radius(spider_scint_layer),make_grooves=spider_scint_details, make_dimples=spider_scint_details);
+    translate([scint_position,0,0]) spider_scint(hole_radius=bpc_hole_radius(spider_scint_layer),make_grooves=spider_scint_details, make_dimples=spider_scint_details);
 }
 
 
