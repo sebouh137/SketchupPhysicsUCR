@@ -18,16 +18,21 @@ module dimple(depth, radius){
      coords=[ for (th=angles) [r*cos(th), r*sin(th)] ];
      polygon(coords);
  }
+ 
+ //cell_side_length=0.88*cm; // 2 cm^2
+//cell_side_length=1.24*cm;  //  4 cm^2
+//cell_side_length=1.39*cm; // 5 cm^2
+cell_side_length=1.52*cm; // 5 cm^2
+
+dimple_sphere_radius=.38*cm;
+dimple_depth=.16*cm;
 
 module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, groove_depth=0.2*cm,thickness=scint_thickness, cell_radius_delta=scint_cell_dr, height=scint_height, width=scint_width,cell_center_min_distance_from_edge=scint_cell_center_min_distance_from_edge,inner_gap=scint_inner_gap,make_dimples=true, make_grooves=true)
 {   
     epsilon=0.1;
     diagonal=sqrt(height*height/4+width*width);
     
-    //cell_side_length=0.88*cm; // 2 cm^2
-    //cell_side_length=1.24*cm;  //  4 cm^2
-    //cell_side_length=1.39*cm; // 5 cm^2
-    cell_side_length=1.52*cm; // 5 cm^2
+    
     
     //miny=-height/2+cell_side_length*sqrt(3)/2;
     //maxy = height/2;
@@ -75,8 +80,7 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
         //dimples
      
      
-        dimple_sphere_radius=.38*cm;
-        dimple_depth=.16*cm;
+        
         rotate([0,0,90])
         if(make_dimples){ 
             
