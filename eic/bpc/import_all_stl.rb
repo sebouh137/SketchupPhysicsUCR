@@ -1,5 +1,6 @@
-#Run this in the ruby console
-#   eval(File.read("import_all_stl.rb"))
+#Run this in the ruby console.  And then go to bed with the laptop running.
+
+#  load "/Users/spaul/Documents/Google Sketchup/DetectorsSketchupUCR/eic/bpc/import_all_stl.rb"
 
 require 'sketchup.rb'
 
@@ -23,10 +24,17 @@ model.start_operation("Import stuff", true)
 
 for name in object_names do
   for side in ["left","right"] do
-    model.import(dir+"openscad_v3/output_stl/" + name+"_" + side + ".stl", false)
-    imported_object = Sketchup.active_model.entities[-1]
-    objects_on_sides[side] << imported_object
+    filename = dir+"openscad_v4/output_stl/" + name+"_" + side + ".stl"
+    puts "begin import "+filename
+    
+    model.import(filename, false)
 
+    puts "finished import " + filename + "\n now processing"
+    
+    imported_object = Sketchup.active_model.entities[-1]
+    imported_object.hidden = true
+    objects_on_sides[side] << imported_object
+    
     if name.include? "cover"
       layer_name="cover"
       material_name="cover"
@@ -46,30 +54,40 @@ for name in object_names do
       material_name="pcb"
     end
     
-      imported_object.layer=model.layers.add(layer_name)
-      imported_object.material=model.materials[material_name]
-
-      #now smooth internal edges:
-
-      #model.start_operation("Soften/Smooth Edges", true)
-
-        imported_object.definition.entities.grep(Sketchup::Edge) { |e|
-          f = e.faces
-          if f[1] && f[0].normal.angle_between(f[1].normal) < 20.degrees
-            e.soft=true
-            e.smooth=true
-          end
-        }
-
-      #model.commit_operation
-      
+    imported_object.layer=model.layers.add(layer_name)
+    imported_object.material=model.materials[material_name]
+    
+    #now smooth internal edges:
+    
+    #model.start_operation("Soften/Smooth Edges", true)
+    
+    imported_object.definition.entities.grep(Sketchup::Edge) { |e|
+      f = e.faces
+      if f[1] && f[0].normal.angle_between(f[1].normal) < 20.degrees
+        e.soft=true
+        e.smooth=true
+      end
+    }
+    
+    #model.commit_operation
+    
   end
 end
+
+puts "finished importing and processing objects.  Now grouping objects together"
 
 for side in ["left","right"] do
   group=model.entities.add_group(objects_on_sides[side])
   group.name=side
+  group.hidden = true
+  for object in objects_on_sides[side] do
+    object.hidden = false
+  end
   group.layer=model.layers.add(side)
+  group.hidden = false
 end
+
+puts "done!"
+
 model.commit_operation
 
