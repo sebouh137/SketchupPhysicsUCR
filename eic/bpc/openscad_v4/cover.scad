@@ -15,7 +15,7 @@ module cover(hole_radius,thickness=cover_thickness, height=cover_height, width=c
                 //union(){
                     //if(holePosition < 0)
                  translate([holePosition/2,0, 0]) cube([abs(holePosition), 100,2*hole_radius], true);
-               rotate([90,0,0]) translate([holePosition, 0, 0])  cylinder(h=10, r=hole_radius,center=true);
+               rotate([90,0,0]) translate([holePosition, 0, 0])  cylinder(h=10, r=hole_radius,center=true, $fn=32);
                     
                 //}
                 

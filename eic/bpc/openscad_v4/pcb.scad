@@ -12,7 +12,7 @@ module pcb(hole_radius,thickness=pcb_thickness, height=pcb_height, width=pcb_wid
             //board
             color("green")  difference() {
                 translate([-width/2-inner_gap, 0, 0]) cube([width, thickness, height],center= true);
-                rotate([90,0,0]) translate([holePosition, 0, 0]) cylinder(h=10, r=hole_radius,center=true);
+                rotate([90,0,0]) translate([holePosition, 0, 0]) cylinder(h=10, r=hole_radius,center=true, $fn=32);
                 translate([holePosition/2,0, 0]) cube([abs(holePosition), 100,2*hole_radius], true);
                 
             }
