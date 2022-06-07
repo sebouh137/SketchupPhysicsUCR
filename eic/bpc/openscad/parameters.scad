@@ -16,23 +16,26 @@ conn_hole_radius=0.25*cm;
 
 // BPC total dimensions
 bpc_length=150*cm;
-bpc_first_hole_radius=15*cm;
-bpc_last_hole_radius=19*cm;
+bpc_first_hole_radius=16.15*cm;
+bpc_last_hole_radius=18.40*cm;
 bpc_layer_thickness=square_absorber_thickness+square_absorber_longitudinal_gap;
 //bpc_nlayers=floor(bpc_length/bpc_layer_thickness);
 bpc_nlayers=51;
-function bpc_hole_radius(i)=bpc_first_hole_radius+(bpc_last_hole_radius-bpc_first_hole_radius)*i/bpc_nlayers;
+function bpc_hole_radius(i)=bpc_first_hole_radius+(bpc_last_hole_radius-bpc_first_hole_radius)*i/(bpc_nlayers-1);
 bpc_outer_gap=0.4*cm;
 
+tanBeamTilt=0.0243;
+beamXAtUpstream=7.7*cm;
+function bpc_hole_position(i)=tanBeamTilt*i*bpc_layer_thickness+beamXAtUpstream;
 
-
+nsquaresX=3;
 
 
 
 //scintillator
 scint_thickness=0.3*cm;
 scint_height=square_absorber_height*6+5*square_absorber_vertical_gap;
-scint_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_gap;
+scint_width=square_absorber_width*nsquaresX+nsquaresX*square_absorber_horizontal_gap-bpc_outer_gap;
 scint_inner_gap=square_absorber_horizontal_gap/2;
 
 
@@ -43,9 +46,10 @@ scint_cell_dphi=9; //degrees
 scint_cell_dr=2.5*cm;
 
 //pcb
-pcb_thickness=.236*cm;
+//pcb_thickness=.236*cm;
+pcb_thickness=.16*cm;
 pcb_height=square_absorber_height*6+5*square_absorber_vertical_gap;
-pcb_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_gap;
+pcb_width=square_absorber_width*nsquaresX+nsquaresX*square_absorber_horizontal_gap-bpc_outer_gap;
 pcb_inner_gap=square_absorber_horizontal_gap/2;
 
 // ESR film
@@ -57,13 +61,13 @@ air_gap_thickness=0.02*cm;
 //cover
 cover_thickness=0.2*cm;
 cover_height=square_absorber_height*6+5*square_absorber_vertical_gap;
-cover_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_gap;
+cover_width=square_absorber_width*nsquaresX+nsquaresX*square_absorber_horizontal_gap-bpc_outer_gap;
 cover_inner_gap=square_absorber_horizontal_gap/2;
 
 //cblock
 cblock_thickness=bpc_layer_thickness-pcb_thickness-scint_thickness-2*air_gap_thickness-2*ESR_film_thickness-cover_thickness;
 cblock_height=square_absorber_height*6+5*square_absorber_vertical_gap;
-cblock_width=square_absorber_width*3+3*square_absorber_horizontal_gap-bpc_outer_gap;
+cblock_width=square_absorber_width*nsquaresX+nsquaresX*square_absorber_horizontal_gap-bpc_outer_gap;
 cblock_inner_gap=square_absorber_horizontal_gap/2;
 
 

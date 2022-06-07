@@ -50,7 +50,7 @@ for name in object_names do
       end
 
       
-      filename = dir+"openscad_v4/output_stl/" + name+"_"+i.to_s+"_" + side + ".stl"
+      filename = dir+"openscad/output_stl/" + name+"_"+i.to_s+"_" + side + ".stl"
       puts "[" +Time.new.inspect + "] begin import "+filename
 
       model.import(filename)

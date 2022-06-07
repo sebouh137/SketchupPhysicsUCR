@@ -27,8 +27,9 @@ cell_side_length=1.52*cm; // 5 cm^2
 dimple_sphere_radius=.38*cm;
 dimple_depth=.16*cm;
 
-module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, groove_depth=0.2*cm,thickness=scint_thickness, cell_radius_delta=scint_cell_dr, height=scint_height, width=scint_width,cell_center_min_distance_from_edge=scint_cell_center_min_distance_from_edge,inner_gap=scint_inner_gap,make_dimples=true, make_grooves=true)
+module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, groove_depth=0.2*cm,thickness=scint_thickness, cell_radius_delta=scint_cell_dr, height=scint_height, width=scint_width,cell_center_min_distance_from_edge=scint_cell_center_min_distance_from_edge,inner_gap=scint_inner_gap,make_dimples=true, make_grooves=true, cell_side_length=cell_side_length, holePosition=77)
 {   
+    mirror([0,1,0]){
     epsilon=0.1;
     diagonal=sqrt(height*height/4+width*width);
     
@@ -54,12 +55,13 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
             //base volume
             rotate([0,0,-90]) difference() {
                 translate([-width/2-inner_gap, 0, 0]) cube([width, thickness*2, height],center= true);
-                rotate([90,0,0]) cylinder(h=thickness*2, r=hole_radius,center=true);
+                rotate([90,0,0]) translate([holePosition,0,0]) cylinder(h=thickness*2, r=hole_radius,center=true, $fn=32);
+                translate([holePosition/2,0, 0]) cube([abs(holePosition), 100,2*    hole_radius], true);
             }
             union(){
                 rotate([0,0,-90]) difference() {
                     translate([-width/2-inner_gap, -groove_depth/2, 0]) cube([width, thickness-groove_depth, height],center= true);
-                    rotate([90,0,0]) cylinder(h=thickness*2, r=hole_radius,center=true);
+                    rotate([90,0,0]) translate([holePosition,0,0]) cylinder(h=thickness*2, r=hole_radius,center=true, $fn=32);
                 }
                     
                     //actually, here we create the cells
@@ -101,7 +103,7 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
         }
         }
     }
-        
+    }
 }
 
 // rendering options (overwritten by commandline)

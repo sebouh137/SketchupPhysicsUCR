@@ -1,5 +1,5 @@
 include<parameters.scad>
-module pcb(hole_radius,thickness=pcb_thickness, height=pcb_height, width=pcb_width,inner_gap=pcb_inner_gap, delta_phi=scint_cell_dphi, make_sipms=true)
+module pcb(hole_radius,thickness=pcb_thickness, height=pcb_height, width=pcb_width,inner_gap=pcb_inner_gap, delta_phi=scint_cell_dphi, make_sipms=true, holePosition=77)
 {   
     epsilon=0.1*cm;
     sipm_width=0.6*cm;
@@ -12,7 +12,8 @@ module pcb(hole_radius,thickness=pcb_thickness, height=pcb_height, width=pcb_wid
             //board
             color("green")  difference() {
                 translate([-width/2-inner_gap, 0, 0]) cube([width, thickness, height],center= true);
-                rotate([90,0,0]) cylinder(h=10, r=hole_radius,center=true);
+                rotate([90,0,0]) translate([holePosition, 0, 0]) cylinder(h=10, r=hole_radius,center=true, $fn=32);
+                translate([holePosition/2,0, 0]) cube([abs(holePosition), 100,2*hole_radius], true);
                 
             }
             if(make_sipms) for(r = [hole_radius+scint_cell_dr/2:scint_cell_dr:diagonal]) {
@@ -35,8 +36,13 @@ if(pcb_all_layers){
     //last layer is absorber only.  
     for(layer_number=[0:bpc_nlayers-2])
         translate([pcb_position+bpc_layer_thickness*layer_number,0,0]) {
-                pcb(hole_radius=bpc_hole_radius( layer_number), make_sipms=false);
-                mirror([0,1,0]) pcb(hole_radius=bpc_hole_radius( layer_number), make_sipms=false);
+                pcb(hole_radius=bpc_hole_radius( layer_number), make_sipms=false, width=pcb_width-100, holePosition=bpc_hole_position(layer_number));
+                mirror([0,1,0]) pcb(
+                            hole_radius=bpc_hole_radius( layer_number), 
+                            make_sipms=false, 
+                            width=pcb_width+100, 
+                            holePosition=-bpc_hole_position(layer_number)
+                        );
             }
 } else {
     translate([pcb_position,0,0])  pcb(hole_radius=bpc_hole_radius(cblock_layer), make_sipms=true);

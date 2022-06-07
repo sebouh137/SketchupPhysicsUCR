@@ -24,7 +24,7 @@ model.start_operation("Import stuff", true)
 
 for name in object_names do
   for side in ["left","right"] do
-    filename = dir+"openscad_v4/output_stl/" + name+"_" + side + ".stl"
+    filename = dir+"openscad/output_stl/" + name+"_" + side + ".stl"
     puts "begin import "+filename
     
     model.import(filename, false)
