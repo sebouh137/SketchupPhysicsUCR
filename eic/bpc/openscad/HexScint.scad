@@ -38,7 +38,7 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
     //miny=-height/2+cell_side_length*sqrt(3)/2;
     //maxy = height/2;
     
-    ny=floor(height/(cell_side_length*sqrt(3)/2)-1);
+    ny=floor(height/(cell_side_length*sqrt(3)/2)+1);
     miny=-floor(ny/2)*cell_side_length*sqrt(3)/2;
     maxy=-miny;
     
@@ -46,7 +46,7 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
     //maxy = height/2;
     
     
-    minx=cell_side_length;
+    minx=width-(floor(width/(3/2*cell_side_length))*3/2+1/2)*cell_side_length;///2;
     maxx = width;               
     
     
