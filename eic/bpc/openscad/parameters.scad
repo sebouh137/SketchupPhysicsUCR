@@ -16,8 +16,8 @@ conn_hole_radius=0.25*cm;
 
 // BPC total dimensions
 bpc_length=150*cm;
-bpc_first_hole_radius=16.15*cm;
-bpc_last_hole_radius=18.40*cm;
+bpc_first_hole_radius=15.00*cm;
+bpc_last_hole_radius=17.25*cm;
 bpc_layer_thickness=square_absorber_thickness+square_absorber_longitudinal_gap;
 //bpc_nlayers=floor(bpc_length/bpc_layer_thickness);
 bpc_nlayers=51;
