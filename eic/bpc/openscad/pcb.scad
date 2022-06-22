@@ -17,11 +17,11 @@ module pcb(hole_radius,thickness=pcb_thickness, height=pcb_height, width=pcb_wid
                 
             }
             if(make_sipms) for(r = [hole_radius+scint_cell_dr/2:scint_cell_dr:diagonal]) {
-                for(phi = [90+delta_phi/2:delta_phi:270]) {
-                    if(abs(r*cos(phi))<width+inner_gap-scint_cell_center_min_distance_from_edge && abs(r*sin(phi))<height/2-scint_cell_center_min_distance_from_edge) {
-                    translate([r*cos(phi),+thickness/2+(sipm_depth-epsilon)/2,r*sin(phi)]) color("grey") cube([sipm_width, sipm_depth+epsilon, sipm_height],center=true);
-                    }
-                }
+                //for(phi = [90+delta_phi/2:delta_phi:270]) {
+                //    if(abs(r*cos(phi))<width+inner_gap-scint_cell_center_min_distance_from_edge && abs(r*sin(phi))<height/2-scint_cell_center_min_distance_from_edge) {
+                //    translate([r*cos(phi),+thickness/2+(sipm_depth-epsilon)/2,r*sin(phi)]) color("grey") cube([sipm_width, sipm_depth+epsilon, sipm_height],center=true);
+                    //}
+                //}
             }
         }
         
@@ -32,7 +32,7 @@ module pcb(hole_radius,thickness=pcb_thickness, height=pcb_height, width=pcb_wid
 pcb_all_layers=true; // render all layers or just one
 pcb_layer=0;  // which layer to render if spider_scint_all_layers=false
 
-if(pcb_all_layers){
+color("green") if(pcb_all_layers){
     //last layer is absorber only.  
     for(layer_number=[0:bpc_nlayers-2])
         translate([pcb_position+bpc_layer_thickness*layer_number,0,0]) {

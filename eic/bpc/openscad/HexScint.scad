@@ -46,7 +46,7 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
     //maxy = height/2;
     
     
-    minx=width-(floor(width/(3/2*cell_side_length))*3/2+1/2)*cell_side_length;///2;
+    minx=width-(floor(width/(3*cell_side_length)+1)*3+1/2)*cell_side_length;///2;
     maxx = width;               
     
     
@@ -58,16 +58,17 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
                 rotate([90,0,0]) translate([holePosition,0,0]) cylinder(h=thickness*2, r=hole_radius,center=true, $fn=32);
                 translate([holePosition/2,0, 0]) cube([abs(holePosition), 100,2*    hole_radius], true);
             }
-            union(){
+            if(make_grooves) union(){
                 rotate([0,0,-90]) difference() {
-                    translate([-width/2-inner_gap, -groove_depth/2, 0]) cube([width, thickness-groove_depth, height],center= true);
+                    translate([-width/2-inner_gap, -groove_depth/2, 0]) 
+                        cube([width, make_grooves ? thickness-groove_depth : thickness, height],center= true);
                     rotate([90,0,0]) translate([holePosition,0,0]) cylinder(h=thickness*2, r=hole_radius,center=true, $fn=32);
                 }
                     
                     //actually, here we create the cells
                     if(make_grooves){
                     
-                        rotate([-90, 0, 90]) translate([0,0, -thickness/2])linear_extrude(thickness, true) union(){
+                        rotate([-90, 0, 90]) translate([0,0, -thickness/2])linear_extrude(thickness) union(){
                             for(i=[0:ny ]){
                                 y = miny+i*cell_side_length*sqrt(3)/2;
                                 offsetx = i%2*cell_side_length*3/2;
@@ -108,7 +109,7 @@ module hex_scint(hole_radius, delta_phi=scint_cell_dphi, groove_width=0.2*cm, gr
 
 // rendering options (overwritten by commandline)
 hex_scint_details=true; // include details
-hex_scint_all_layers=false; // render all layers or just one
+hex_scint_all_layers=true; // render all layers or just one
 hex_scint_layer=0;  // which layer to render if hex_scint_all_layers=false
 
 //make_grooves=hex_scint_details
@@ -117,11 +118,17 @@ make_dimples=true;
 
 if(hex_scint_all_layers){
     //last layer is absorber only.  
-    for(layer_number=[0:bpc_nlayers-2])
+    for(layer_number=[0:bpc_nlayers-2]){
+        cell_side_length_i=(layer_number<7 ? 18.6 : 0) +
+                    +((layer_number>=7 && layer_number<14) ? 31.0 : 0)
+                    +(layer_number>=14 ? 37.2 : 0);
+            
+            echo (cell_side_length_i);
         translate([scint_position+bpc_layer_thickness*layer_number,0,0]) {
-                hex_scint(hole_radius=bpc_hole_radius( layer_number),make_grooves=hex_scint_details, make_dimples=hex_scint_details);
-                mirror([0,1,0]) hex_scint(hole_radius=bpc_hole_radius( layer_number),make_grooves=make_grooves, make_dimples=hex_make_dimples);
+                hex_scint(hole_radius=bpc_hole_radius( layer_number),make_grooves=hex_scint_details, make_dimples=hex_scint_details, holePosition=bpc_hole_position(layer_number), cell_side_length=cell_side_length_i);
+                mirror([0,1,0]) hex_scint(hole_radius=bpc_hole_radius( layer_number),make_grooves=hex_scint_details, make_dimples=hex_scint_details,holePosition=-bpc_hole_position(layer_number), cell_side_length=cell_side_length_i);
             }
+      }
 } else {
     translate([0,0,0]) hex_scint(hole_radius=bpc_hole_radius(hex_scint_layer),make_grooves=make_grooves, make_dimples=make_dimples);
 }
